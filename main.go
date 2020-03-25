@@ -61,8 +61,8 @@ func main() {
 	r.Handle("/ldash/{folder}/{name:[a-zA-Z0-9/_-]+}.{name:[a-zA-Z0-9/_-]+}", file_deleteHandler).Methods("DELETE")
 	r.Handle("/ldashplay/{folder}/{name:[a-zA-Z0-9/_-]+}.{name:[a-zA-Z0-9/_-]+}", dash_playHandler)
 
-	r.Handle("/healthcheck", testHandler).Methods("GET")
-	r.Handle("/probe/testfile", testHandler).Methods("GET")
+	r.HandleFunc("/healthcheck", testHandler).Methods("GET")
+	r.HandleFunc("/probe/testfile", testHandler).Methods("GET")
 	
 	utils.GetMainLogger().Infof("start server\n")
 	log.Fatal(http.ListenAndServe(":8080", r))
