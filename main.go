@@ -12,6 +12,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func testHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		return
+	}
+	w.Write([]byte("UP"))
+}
+
 func main() {
 	flag.Parse()
 	args := flag.Args()
@@ -56,13 +63,6 @@ func main() {
 
 	r.Handle("/healthcheck", testHandler).Methods("GET")
 	r.Handle("/probe/testfile", testHandler).Methods("GET")
-	
-	func testHandler(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodOptions {
-			return
-		}
-		w.Write([]byte("UP"))
-	}
 	
 	utils.GetMainLogger().Infof("start server\n")
 	log.Fatal(http.ListenAndServe(":8080", r))
