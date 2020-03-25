@@ -54,6 +54,16 @@ func main() {
 	r.Handle("/ldash/{folder}/{name:[a-zA-Z0-9/_-]+}.{name:[a-zA-Z0-9/_-]+}", file_deleteHandler).Methods("DELETE")
 	r.Handle("/ldashplay/{folder}/{name:[a-zA-Z0-9/_-]+}.{name:[a-zA-Z0-9/_-]+}", dash_playHandler)
 
+	r.Handle("/healthcheck", testHandler).Methods("GET")
+	r.Handle("/probe/testfile", testHandler).Methods("GET")
+	
+	func testHandler(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			return
+		}
+		w.Write([]byte("UP"))
+	}
+	
 	utils.GetMainLogger().Infof("start server\n")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
